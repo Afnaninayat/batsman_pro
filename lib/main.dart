@@ -5,6 +5,8 @@ void main() {
 }
 
 class BatsmanProApp extends StatelessWidget {
+  const BatsmanProApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,6 +19,8 @@ class BatsmanProApp extends StatelessWidget {
 
 // ------------------- 1. Onboarding -------------------
 class OnboardingPage extends StatelessWidget {
+  const OnboardingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +71,8 @@ class OnboardingPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
                   },
-                  child: Text("Next"),
+                  child: Text("Next",
+                  style: TextStyle(color: Colors.white),)
                 )
               ],
             ),
@@ -80,7 +85,7 @@ class OnboardingPage extends StatelessWidget {
 
 class DotIndicator extends StatelessWidget {
   final bool active;
-  DotIndicator(this.active);
+  const DotIndicator(this.active, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +105,8 @@ class DotIndicator extends StatelessWidget {
 class LoginPage extends StatelessWidget {
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController passCtrl = TextEditingController();
+
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +147,8 @@ class LoginPage extends StatelessWidget {
                     minimumSize: Size(double.infinity, 48),
                     backgroundColor: Colors.blue,
                   ),
-                  child: Text("Login"),
+                  child: Text("Login",
+                  style: TextStyle(color: Colors.white))
                 ),
                 SizedBox(height: 12),
                 Center(child: Text("Or continue with")),
@@ -165,6 +173,8 @@ class LoginPage extends StatelessWidget {
 
 // ------------------- 3. Project Page -------------------
 class ProjectPage extends StatelessWidget {
+  const ProjectPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,6 +219,8 @@ class ProjectPage extends StatelessWidget {
 
 // ------------------- 4. Home Analytics Page -------------------
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,7 +269,7 @@ class CircularStat extends StatelessWidget {
   final String value;
   final Color color;
 
-  CircularStat({required this.label, required this.value, required this.color});
+  const CircularStat({super.key, required this.label, required this.value, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +300,7 @@ class CircularStat extends StatelessWidget {
 // ------------------- Bottom Navigation -------------------
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
-  BottomNavBar({required this.currentIndex});
+  const BottomNavBar({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
