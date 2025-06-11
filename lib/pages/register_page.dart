@@ -1,87 +1,142 @@
 import 'package:flutter/material.dart';
-import 'project_page.dart'; // Navigate to projects after registration
+import 'package:firebase_auth/firebase_auth.dart';
+import 'login_page.dart';
 
-class RegisterPage extends StatelessWidget {
-  final TextEditingController nameCtrl = TextEditingController();
-  final TextEditingController emailCtrl = TextEditingController();
-  final TextEditingController passCtrl = TextEditingController();
-  final TextEditingController confirmCtrl = TextEditingController();
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
-  RegisterPage({super.key});
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final emailCtrl = TextEditingController();
+  final passCtrl = TextEditingController();
+
+  void register() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailCtrl.text.trim(),
+        password: passCtrl.text.trim(),
+      );
+
+      // Show success snackbar and return to login
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Registration successful! Please log in.")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Registration failed: ${e.toString()}")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        fit: StackFit.expand,
         children: [
           Positioned.fill(
             child: Opacity(
-              opacity: 0.1,
-              child: Image.asset("assets/cricketer.png", fit: BoxFit.cover),
+              opacity: 0.2,
+              child: Image.asset(
+                'assets/login_bg.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: ListView(
-              children: [
-                SizedBox(height: 80),
-                Text("Create Account", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                SizedBox(height: 20),
-                TextField(
-                  controller: nameCtrl,
-                  decoration: InputDecoration(labelText: "Full Name"),
-                ),
-                TextField(
-                  controller: emailCtrl,
-                  decoration: InputDecoration(labelText: "Email Address"),
-                ),
-                TextField(
-                  controller: passCtrl,
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: "Password"),
-                ),
-                TextField(
-                  controller: confirmCtrl,
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: "Confirm Password"),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Simple validation
-                    if (passCtrl.text != confirmCtrl.text) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Passwords do not match")),
-                      );
-                      return;
-                    }
-                    // Proceed to next screen or handle registration logic
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => ProjectPage()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 48),
-                    backgroundColor: Colors.blue,
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Create Account",
+                    style: TextStyle(
+                      shadows: [
+                        Shadow(
+                          blurRadius: 10.0,
+                          color: Colors.black,
+                          offset: Offset(2.0, 2.0),
+                        ),
+                      ],
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                  child: Text("Register", style: TextStyle(color: Colors.white)),
-                ),
-                SizedBox(height: 12),
-                Center(child: Text("Or continue with")),
-                SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.g_mobiledata, size: 40)),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.facebook, size: 30)),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.apple, size: 30)),
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Already have an account? Login"),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: emailCtrl,
+                    decoration: const InputDecoration(
+                      labelText: "Email Address",
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: passCtrl,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Password",
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: register,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 48),
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: const Text(
+                      "Register",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Already have an account? ",
+                        style: TextStyle(
+                          shadows: [
+                            Shadow(
+                              blurRadius: 10.0,
+                              color: Colors.black,
+                              offset: Offset(3.0, 3.0),
+                            ),
+                          ],
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.blueAccent,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/login_page.dart';
-import '../widgets/dot_indicator.dart';
+import 'login_page.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -23,30 +22,30 @@ class OnboardingPage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     DotIndicator(true),
                     DotIndicator(false),
                     DotIndicator(false),
                   ],
                 ),
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   "Your Smart Cricket Coach,\nOn the Go.",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
                   "Train smarter with powerful AI that analyzes every shot, tracks your footwork, and gives you actionable feedback.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Colors.grey[600]),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 48),
+                    minimumSize: const Size(double.infinity, 48),
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -55,12 +54,30 @@ class OnboardingPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
                   },
-                  child: Text("Next", style: TextStyle(color: Colors.white)),
+                  child: const Text("Next", style: TextStyle(color: Colors.white)),
                 )
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DotIndicator extends StatelessWidget {
+  final bool active;
+  const DotIndicator(this.active, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      width: 8,
+      height: 8,
+      decoration: BoxDecoration(
+        color: active ? Colors.blue : Colors.grey[300],
+        shape: BoxShape.circle,
       ),
     );
   }
