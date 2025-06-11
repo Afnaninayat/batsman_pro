@@ -32,7 +32,7 @@ class ProjectPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const Text("Nothing here. For now.", style: TextStyle(fontSize: 18)),
                   const SizedBox(height: 8),
-                  ElevatedButton(onPressed: () {}, child: const Text("Start a project"))
+                  ElevatedButton(onPressed: () {}, child: const Text("Upload a Video"))
                 ],
               ),
             ),
