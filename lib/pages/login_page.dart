@@ -71,31 +71,68 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: emailCtrl,
-                  decoration: const InputDecoration(
-                    labelText: "Email Address",
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: passCtrl,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                ),
+Container(
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(12),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black12,
+        blurRadius: 6,
+        offset: const Offset(0, 2),
+      ),
+    ],
+  ),
+  child: TextField(
+    controller: emailCtrl,
+    keyboardType: TextInputType.emailAddress,
+    textInputAction: TextInputAction.next,
+    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+    style: const TextStyle(fontSize: 16),
+    decoration: InputDecoration(
+      hintText: "Email Address",
+      prefixIcon: const Icon(Icons.email_outlined, color: Colors.grey),
+      border: InputBorder.none,
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+    ),
+  ),
+),
+const SizedBox(height: 16),
+Container(
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(12),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black12,
+        blurRadius: 6,
+        offset: const Offset(0, 2),
+      ),
+    ],
+  ),
+  child: TextField(
+    controller: passCtrl,
+    obscureText: true,
+    textInputAction: TextInputAction.done,
+    onSubmitted: (_) => login(),
+    style: const TextStyle(fontSize: 16),
+    decoration: InputDecoration(
+      hintText: "Password",
+      prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+      border: InputBorder.none,
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+    ),
+  ),
+),
+
+
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {},
                     child: const Text(
                       "Forgot password?",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.blueAccent),
                     ),
                   ),
                 ),
