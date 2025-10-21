@@ -5,6 +5,8 @@ import '../widgets/bottom_nav_bar.dart';
 import '../widgets/circular_stat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
+// Exploer page
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

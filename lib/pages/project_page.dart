@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../widgets/bottom_nav_bar.dart';
+import '../pages/login_page.dart';
+
 
 class ProjectPage extends StatefulWidget {
   const ProjectPage({super.key});
@@ -17,13 +19,18 @@ class _ProjectPageState extends State<ProjectPage> {
   int _currentTabIndex = 0;
   final List<Map<String, String>> _videos = [];
 
-  void _logout() async {
-    await FirebaseAuth.instance.signOut();
-    if (context.mounted) {
-      Navigator.of(context).pushReplacementNamed('/LoginPage'); // Update to your login route
-    }
-  }
+void _logout() async {
+  await FirebaseAuth.instance.signOut();
 
+  if (!context.mounted) return;
+
+  // Navigate to LoginPage and clear all previous routes
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (context) => const LoginPage()),
+    (route) => false,
+  );
+}
   Future<void> _showUploadOptions() async {
     showModalBottomSheet(
       context: context,
@@ -178,9 +185,10 @@ class _ProjectPageState extends State<ProjectPage> {
         leading: IconButton(
           icon: const Icon(Icons.logout),
           tooltip: 'Logout',
-          onPressed: _logout,
+          onPressed: () => _logout(),
         ),
       ),
+      
       body: Column(
         children: [
           Padding(
