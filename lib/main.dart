@@ -17,7 +17,7 @@ class BatsmanProApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Batsman Pro',
+      title: 'Batsman bro',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const OnboardingPage(),
