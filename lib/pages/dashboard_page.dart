@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:video_player/video_player.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../pages/login_page.dart';
-import '../pages/profile_page.dart';
+
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -223,16 +223,8 @@ class _DashboardPageState extends State<DashboardPage>
     );
   }
 
-  void _togglePlayPause() {
-    if (_controller == null) return;
-    setState(() {
-      if (_controller!.value.isPlaying) {
-        _controller!.pause();
-      } else {
-        _controller!.play();
-      }
-    });
-  }
+  // ignore: unused_element
+  void _togglePlayPause() { }
 
   @override
   void dispose() {
@@ -251,28 +243,9 @@ class _DashboardPageState extends State<DashboardPage>
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.sports_cricket, color: Colors.blueAccent),
-            const SizedBox(width: 8),
-            const Text("Dashboard",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
-          ],
-        ),
+        title: const Text("Dashboard",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person, color: Colors.blueAccent),
-            tooltip: "Profile",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
-              );
-            },
-          ),
-        ],
         leading: IconButton(
           icon: const Icon(Icons.logout, color: Colors.black),
           onPressed: _logout,
@@ -288,7 +261,6 @@ class _DashboardPageState extends State<DashboardPage>
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 20),
-
             const Text(
               "Upload or Record Your Batting Session",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -301,7 +273,6 @@ class _DashboardPageState extends State<DashboardPage>
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-
             // Upload Button
             GestureDetector(
               onTap: _isUploading ? null : _showUploadOptions,
@@ -325,32 +296,30 @@ class _DashboardPageState extends State<DashboardPage>
                     ],
                   ),
                   child: Center(
-  child: _isUploading
-      ? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset('assets/animations/uploading.json',
-                width: 100, height: 100),
-            const SizedBox(height: 10),
-            Text(
-              "${_uploadProgress.toStringAsFixed(0)}%",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
-        )
-      : Lottie.asset('assets/animations/upload_button.json',
-          width: 100, height: 100),
-),
-
+                    child: _isUploading
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Lottie.asset('assets/animations/uploading.json',
+                                  width: 100, height: 100),
+                              const SizedBox(height: 10),
+                              Text(
+                                "${_uploadProgress.toStringAsFixed(0)}%",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Lottie.asset('assets/animations/upload_button.json',
+                            width: 100, height: 100),
+                  ),
                 ),
               ),
             ),
-
             const SizedBox(height: 40),
-
             if (_isInitialized && _uploadedVideoUrl != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,51 +329,28 @@ class _DashboardPageState extends State<DashboardPage>
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12.withOpacity(0.05),
-                          blurRadius: 10,
-                        )
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: AspectRatio(
-                        aspectRatio: _controller!.value.aspectRatio,
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            VideoPlayer(_controller!),
-                            VideoProgressIndicator(_controller!,
-                                allowScrubbing: true,
-                                colors: const VideoProgressColors(
-                                  playedColor: Colors.blueAccent,
-                                )),
-                            Positioned(
-                              bottom: 10,
-                              right: 10,
-                              child: FloatingActionButton(
-                                mini: true,
-                                backgroundColor: Colors.blueAccent,
-                                onPressed: _togglePlayPause,
-                                child: Icon(
-                                  _controller!.value.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                ),
-                              ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: AspectRatio(
+                      aspectRatio: _controller!.value.aspectRatio,
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          VideoPlayer(_controller!),
+                          VideoProgressIndicator(
+                            _controller!,
+                            allowScrubbing: true,
+                            colors: const VideoProgressColors(
+                              playedColor: Colors.blueAccent,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
+                    onPressed: _showModelDialog,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent,
                       shape: RoundedRectangleBorder(
@@ -412,7 +358,6 @@ class _DashboardPageState extends State<DashboardPage>
                       ),
                       minimumSize: const Size(double.infinity, 48),
                     ),
-                    onPressed: _showModelDialog,
                     child: const Text(
                       "Show Detail Analytics",
                       style: TextStyle(color: Colors.white, fontSize: 16),
