@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/bottom_nav_bar.dart';
+import '../pages/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,17 +13,26 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final user = FirebaseAuth.instance.currentUser;
 
-  // Mock data — in the future, you can fetch from Firestore
   String firstName = "Afnan";
   String lastName = "Inayat";
   String height = "5'9\"";
   String dateOfBirth = "15 June 2002";
 
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    if (!mounted) return;
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F9FC),
-      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
@@ -39,64 +49,46 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Profile Picture Placeholder
+            // Profile Avatar
             Center(
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey[300],
-                    child: const Icon(Icons.person,
-                        size: 60, color: Colors.white70),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                      color: Colors.blueAccent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.edit, color: Colors.white, size: 18),
-                  ),
-                ],
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.blueAccent.shade100,
+                child: const Icon(Icons.person, size: 60, color: Colors.white),
               ),
             ),
-            const SizedBox(height: 20),
-
+            const SizedBox(height: 15),
             Text(
               "$firstName $lastName",
               style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Text(
-              user?.email ?? "No email available",
+              user?.email ?? "No email found",
               style: const TextStyle(color: Colors.grey, fontSize: 15),
             ),
             const SizedBox(height: 30),
 
-            // Profile Details
+            // Details
             _buildProfileTile(Icons.height, "Height", height),
             _buildProfileTile(Icons.cake, "Date of Birth", dateOfBirth),
             _buildProfileTile(Icons.badge, "First Name", firstName),
             _buildProfileTile(Icons.person, "Last Name", lastName),
+
             const SizedBox(height: 30),
 
-            // Back Button
             ElevatedButton.icon(
+              onPressed: _logout,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Colors.redAccent,
                 minimumSize: const Size(double.infinity, 48),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                    borderRadius: BorderRadius.circular(12)),
               ),
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.logout, color: Colors.white),
               label: const Text(
-                "Back to Dashboard",
+                "Logout",
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
@@ -114,20 +106,17 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12.withOpacity(0.05),
-            blurRadius: 8,
-            spreadRadius: 1,
-          ),
+              color: Colors.black12.withOpacity(0.05),
+              blurRadius: 8,
+              spreadRadius: 1),
         ],
       ),
       child: ListTile(
         leading: Icon(icon, color: Colors.blueAccent),
         title: Text(title,
             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-        trailing: Text(
-          value,
-          style: const TextStyle(color: Colors.black54, fontSize: 15),
-        ),
+        trailing: Text(value,
+            style: const TextStyle(color: Colors.black54, fontSize: 15)),
       ),
     );
   }
