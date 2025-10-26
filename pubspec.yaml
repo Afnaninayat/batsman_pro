@@ -39,3 +39,15 @@ flutter_icons:
   image_path: "assets/images/logo.png"
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/images/logo.png"
+
+fonts:
+  - family: Poppins
+    fonts:
+      - asset: assets/fonts/Poppins-Regular.ttf
+      - asset: assets/fonts/Poppins-Bold.ttf
+        weight: 700
+
+Gold Gradient:  #eabc5c → #d7942e  
+Accent:         #ffe000  
+Dark Contrast:  #3c280d  
+Background:     #000000 (rich contrast)  

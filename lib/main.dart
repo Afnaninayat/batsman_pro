@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'pages/splash_screen.dart';
-import 'firebase_options.dart'; // Auto-generated via `flutterfire configure`
+import 'firebase_options.dart';
+import 'theme.dart'; // ✅ Add this import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,7 @@ class BatsmanProApp extends StatelessWidget {
     return MaterialApp(
       title: 'Batsman Pro',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: AppTheme.theme, // ✅ Use your new golden theme here
       home: const SplashScreen(),
     );
   }
