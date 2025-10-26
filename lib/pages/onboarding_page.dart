@@ -15,9 +15,9 @@
     late Timer _timer;
 
     final List<String> images = [
-      'assets/slider2.png',
-      'assets/slider1.jpeg',
-      'assets/onboarding1.jpeg',
+      'assets/images/slider2.png',
+      'assets/images/slider1.jpeg',
+      'assets/images/onboarding1.jpeg',
     ];
 
     @override

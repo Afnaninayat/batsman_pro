@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Opacity(
               opacity: 0.2,
               child: Image.asset(
-                'assets/login_bg.png',
+                'assets/images/login_bg.png',
                 fit: BoxFit.cover,
               ),
             ),
