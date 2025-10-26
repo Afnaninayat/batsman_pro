@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'pages/onboarding_page.dart';
+import 'pages/splash_screen.dart';
 import 'firebase_options.dart'; // Auto-generated via `flutterfire configure`
 
 void main() async {
@@ -20,7 +20,7 @@ class BatsmanProApp extends StatelessWidget {
       title: 'Batsman Pro',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const OnboardingPage(),
+      home: const SplashScreen(),
     );
   }
 }
