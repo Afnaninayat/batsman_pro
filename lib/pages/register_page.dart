@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../theme.dart'; // 👈 Use your global theme
 import 'login_page.dart';
-import 'dashboard_page.dart';
+// import 'dashboard_page.dart';
+import 'videos_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -58,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage>
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        MaterialPageRoute(builder: (_) => const VideosPage()),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
