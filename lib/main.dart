@@ -1,8 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'pages/splash_screen.dart';
+
+// ignore: unused_import
+import 'pages/videos_page.dart';
 import 'firebase_options.dart';
-import 'theme.dart'; // ✅ Add this import
+import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +24,7 @@ class BatsmanProApp extends StatelessWidget {
     return MaterialApp(
       title: 'Batsman Pro',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme, // ✅ Use your new golden theme here
+      theme: AppTheme.theme,
       home: const SplashScreen(),
     );
   }
