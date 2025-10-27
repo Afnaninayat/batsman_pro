@@ -12,44 +12,43 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  double _progress = 0.0;
 
   @override
   void initState() {
     super.initState();
 
-    // Animation setup
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 4),
-    );
-
-    _scaleAnimation =
-        CurvedAnimation(parent: _controller, curve: Curves.easeOutBack);
+      duration: const Duration(seconds: 2),
+    )..forward();
 
     _fadeAnimation =
         CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
-    _controller.forward();
+    // Smooth loading simulation
+    Timer.periodic(const Duration(milliseconds: 120), (timer) {
+      setState(() {
+        if (_progress < 1.0) {
+          _progress += 0.04;
+        } else {
+          timer.cancel();
+        }
+      });
+    });
 
-    // Navigate to Onboarding after 3 seconds
-    Timer(const Duration(seconds: 4), () {
+    // Navigate after short delay
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 600),
+          transitionDuration: const Duration(milliseconds: 500),
           pageBuilder: (_, __, ___) => const OnboardingPage(),
           transitionsBuilder: (_, animation, __, child) {
             return FadeTransition(
               opacity: animation,
-              child: SlideTransition(
-                position: Tween(
-                  begin: const Offset(0, 0.1),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              ),
+              child: child,
             );
           },
         ),
@@ -66,32 +65,68 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: ScaleTransition(
-            scale: _scaleAnimation,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/logo.png', // your app logo
-                  width: 150,
-                  height: 150,
+      backgroundColor: Colors.black,
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 🏏 App Logo
+              Image.asset(
+                'assets/images/logo.png',
+                width: 150,
+                height: 150,
+              ),
+              const SizedBox(height: 20),
+
+              // 🏷️ App Name
+              const Text(
+                "BatsmanPro",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  "BatsmanPro",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
+              ),
+
+              const SizedBox(height: 50),
+
+              // ⏳ Loading Bar (Flat + Simple)
+              Container(
+                width: 180,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 180 * _progress,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // ⚪ Loading Text
+              const Text(
+                "Loading...",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
           ),
         ),
       ),
