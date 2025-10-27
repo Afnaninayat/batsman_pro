@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import '../widgets/bottom_nav_bar.dart';
-import '../pages/login_page.dart';
+import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,17 +13,21 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final user = FirebaseAuth.instance.currentUser;
 
+  // 🎨 Theme Colors
+  static const Color goldLight = Color(0xFFEABC5C);
+  static const Color background = Color(0xFF000000);
+
   String firstName = "Afnan";
   String lastName = "Inayat";
   String height = "5'9\"";
-  String dateOfBirth = "15 June 2002";
+  String dob = "15 June 2002";
 
-  void _logout() async {
+  Future<void> _logout() async {
     await FirebaseAuth.instance.signOut();
     if (!mounted) return;
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
+      MaterialPageRoute(builder: (_) => const LoginPage()),
       (route) => false,
     );
   }
@@ -31,65 +35,89 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F9FC),
-      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
+      backgroundColor: background,
+
+      // 🧭 Bottom Navigation Bar
+      bottomNavigationBar: const BottomNavBar(currentIndex: 2),
+
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: background,
         elevation: 1,
         centerTitle: true,
-        title: const Text(
-          "Profile",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.person_outline, color: goldLight, size: 26),
+            SizedBox(width: 8),
+            Text(
+              "Profile",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
+            ),
+          ],
         ),
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Profile Avatar
-            Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.blueAccent.shade100,
-                child: const Icon(Icons.person, size: 60, color: Colors.white),
-              ),
+            // 🟡 Profile Avatar
+            CircleAvatar(
+              radius: 55,
+              backgroundColor: goldLight,
+              child: const Icon(Icons.person, size: 65, color: Colors.black),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 12),
+
+            // 🧍‍♂️ Name & Email
             Text(
               "$firstName $lastName",
               style: const TextStyle(
-                  fontSize: 22, fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 4),
             Text(
               user?.email ?? "No email found",
-              style: const TextStyle(color: Colors.grey, fontSize: 15),
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.7),
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 30),
 
-            // Details
+            // 🧾 User Info Tiles
             _buildProfileTile(Icons.height, "Height", height),
-            _buildProfileTile(Icons.cake, "Date of Birth", dateOfBirth),
+            _buildProfileTile(Icons.cake, "Date of Birth", dob),
             _buildProfileTile(Icons.badge, "First Name", firstName),
             _buildProfileTile(Icons.person, "Last Name", lastName),
 
             const SizedBox(height: 30),
 
+            // 🚪 Logout Button
             ElevatedButton.icon(
               onPressed: _logout,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-              ),
-              icon: const Icon(Icons.logout, color: Colors.white),
+              icon: const Icon(Icons.logout, color: Colors.black),
               label: const Text(
                 "Logout",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: goldLight,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                elevation: 4,
               ),
             ),
           ],
@@ -98,25 +126,33 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // 🔹 Profile Info Tile
   Widget _buildProfileTile(IconData icon, String title, String value) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white12, width: 0.8),
         boxShadow: [
           BoxShadow(
-              color: Colors.black12.withOpacity(0.05),
-              blurRadius: 8,
-              spreadRadius: 1),
+            color: Colors.black.withOpacity(0.35),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          )
         ],
       ),
       child: ListTile(
-        leading: Icon(icon, color: Colors.blueAccent),
-        title: Text(title,
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-        trailing: Text(value,
-            style: const TextStyle(color: Colors.black54, fontSize: 15)),
+        leading: Icon(icon, color: goldLight),
+        title: Text(
+          title,
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
+        ),
+        trailing: Text(
+          value,
+          style: const TextStyle(color: Colors.white70, fontSize: 15),
+        ),
       ),
     );
   }
